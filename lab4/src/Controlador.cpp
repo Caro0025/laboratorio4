@@ -129,8 +129,20 @@ bool ControladorSistema::altaPublicacion(string nicknameInmobiliaria, int codigo
         std::cerr << "Error: Inmueble no encontrado para esa inmobiliaria." << std::endl;
         return false;
     }
+    //código para la publicación
+    static int proximoCodigoPublicacion = 1;
+    int codigo = proximoCodigoPublicacion++;
 
-    Publicacion* publicacion = new Publicacion(tipo, texto, precio);
+    // Crear la fecha actual??
+    time_t now = time(0);
+    tm* ltm = localtime(&now);
+    DTFecha fecha(
+        ltm->tm_mday,
+        1 + ltm->tm_mon,
+        1900 + ltm->tm_year
+    );
+    
+    Publicacion* publicacion = new Publicacion(codigo, fecha, tipo, texto, precio, true);
     inmueble->setPublicacion(publicacion);
 
     return true;
